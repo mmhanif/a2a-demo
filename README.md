@@ -82,7 +82,32 @@ uv sync
 
 ## Running the Demo
 
-### Option 1: Run Individual Agents
+### Option 1: Gradio Web UI (Recommended)
+
+The easiest way to explore the demo is through the interactive web interface:
+
+```bash
+# Quick start
+uv run python gradio_ui.py
+
+# Or use the launch script
+./launch_ui.sh
+```
+
+This will:
+1. Start the OrchestratorAgent automatically on port 5003
+2. Launch the web interface at http://localhost:7860
+3. Open your browser to interact with the agents
+
+**Features:**
+- 🎛️ **Agent Management**: Start/stop agents with a click
+- 💬 **Chat Interface**: Interactive conversation with the orchestrator
+- 📋 **Interaction Log**: Monitor all agent communications in real-time
+- 🔄 **Auto-refresh**: Status updates every 3 seconds
+
+See [GRADIO_UI_README.md](GRADIO_UI_README.md) for detailed UI documentation.
+
+### Option 2: Run Individual Agents
 
 In separate terminals:
 
@@ -97,7 +122,7 @@ uv run python -m a2a_demo.agents.translator_agent
 uv run python -m a2a_demo.agents.orchestrator_agent
 ```
 
-### Option 2: Interactive Python Session
+### Option 3: Interactive Python Session
 
 ```python
 from a2a_demo.client import A2AClient
@@ -119,7 +144,7 @@ response = calc_client.chat("x + 10 = 25")
 print(response)  # "The solution is x = 15"
 ```
 
-### Option 3: Using the Orchestrator
+### Option 4: Using the Orchestrator
 
 ```python
 from a2a_demo.client import A2AClient
