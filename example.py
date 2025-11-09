@@ -10,6 +10,14 @@ Note: This requires agents to be running. Run agents in separate terminals first
 """
 
 from a2a_demo.client import A2AClient
+from a2a_demo.config import (
+    CALCULATOR_AGENT,
+    CALCULATOR_URL,
+    ORCHESTRATOR_AGENT,
+    ORCHESTRATOR_URL,
+    TRANSLATOR_AGENT,
+    TRANSLATOR_URL,
+)
 import time
 
 
@@ -19,7 +27,7 @@ def demo_calculator():
     print("DEMO 1: Calculator Agent")
     print("="*60)
     
-    client = A2AClient("http://localhost:5001")
+    client = A2AClient(CALCULATOR_URL)
     
     # Get agent card
     print("\n1. Getting agent card...")
@@ -54,7 +62,7 @@ def demo_translator():
     print("DEMO 2: Translator Agent")
     print("="*60)
     
-    client = A2AClient("http://localhost:5002")
+    client = A2AClient(TRANSLATOR_URL)
     
     # Get agent card
     print("\n1. Getting agent card...")
@@ -83,7 +91,7 @@ def demo_orchestrator():
     print("DEMO 3: Orchestrator Agent")
     print("="*60)
     
-    client = A2AClient("http://localhost:5000")
+    client = A2AClient(ORCHESTRATOR_URL)
     
     # Get agent card
     print("\n1. Getting orchestrator card...")
@@ -113,7 +121,7 @@ def demo_task_lifecycle():
     print("DEMO 4: Task Lifecycle")
     print("="*60)
     
-    client = A2AClient("http://localhost:5001")
+    client = A2AClient(CALCULATOR_URL)
     
     print("\n1. Creating a task...")
     task = client.create_task(metadata={"demo": "task_lifecycle"})
@@ -156,9 +164,9 @@ def main():
     # Check which agents are running
     print("\nChecking agent availability...")
     agents = [
-        ("OrchestratorAgent", "http://localhost:5000"),
-        ("CalculatorAgent", "http://localhost:5001"),
-        ("TranslatorAgent", "http://localhost:5002")
+        (ORCHESTRATOR_AGENT.name, ORCHESTRATOR_URL),
+        (CALCULATOR_AGENT.name, CALCULATOR_URL),
+        (TRANSLATOR_AGENT.name, TRANSLATOR_URL),
     ]
     
     available = []

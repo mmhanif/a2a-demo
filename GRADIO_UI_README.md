@@ -40,7 +40,7 @@ uv run python gradio_ui.py
 ```
 
 This will:
-1. Automatically start the OrchestratorAgent on port 5000
+1. Automatically start the OrchestratorAgent on port 5003
 2. Launch the Gradio web interface on port 7860
 3. Open your browser to `http://localhost:7860`
 
@@ -163,7 +163,7 @@ The UI consists of:
 ## Troubleshooting
 
 ### Agents Won't Start
-- Ensure ports 5000-5002 are available
+- Ensure ports 5001-5003 are available
 - Check the Status Message field for error details
 - Verify agents can be started manually: `uv run python -m a2a_demo.agents.calculator_agent`
 

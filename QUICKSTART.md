@@ -65,19 +65,20 @@ Then interact with agents:
 
 ```python
 from a2a_demo.client import A2AClient
+from a2a_demo.config import CALCULATOR_URL, TRANSLATOR_URL, ORCHESTRATOR_URL
 
 # Talk to the calculator
-calc = A2AClient("http://localhost:5001")
+calc = A2AClient(CALCULATOR_URL)
 print(calc.chat("100 + 250"))
 print(calc.chat("x + 20 = 50"))
 
 # Talk to the translator
-trans = A2AClient("http://localhost:5002")
+trans = A2AClient(TRANSLATOR_URL)
 print(trans.chat("translate hello to spanish"))
 print(trans.chat("translate thank you to french"))
 
 # Talk to the orchestrator (routes to other agents)
-orch = A2AClient("http://localhost:5000")
+orch = A2AClient(ORCHESTRATOR_URL)
 print(orch.chat("list agents"))
 print(orch.chat("calculate 15 * 8"))
 print(orch.chat("translate goodbye to german"))
@@ -104,7 +105,7 @@ The A2A protocol enables:
 
 **"Connection refused" error?**
 - Make sure all 3 agent servers are running
-- Check they're on the right ports (5000, 5001, 5002)
+- Confirm they're using the default ports from `a2a_demo.config`
 
 **Import errors?**
 - Run `uv sync` to install dependencies

@@ -3,8 +3,9 @@
 import pytest
 from unittest.mock import Mock, patch
 from a2a_demo.agents import CalculatorAgent, TranslatorAgent, OrchestratorAgent
-from a2a_demo.models import TaskMessage, MessageRole, TaskStatus, InteractionMode
 from a2a_demo.client import A2AClient
+from a2a_demo.config import CALCULATOR_URL, DEFAULT_AGENT_URL
+from a2a_demo.models import TaskMessage, MessageRole, TaskStatus, InteractionMode
 
 
 class TestCalculatorAgent:
@@ -165,17 +166,17 @@ class TestOrchestratorAgent:
             "result": {
                 "name": "TestAgent",
                 "description": "A test agent",
-                "url": "http://localhost:5001",
+                "url": CALCULATOR_URL,
                 "skills": [],
                 "supported_interaction_modes": ["text"],
                 "version": "1.0",
-                "metadata": {}
+                "metadata": {},
             }
         }
         mock_post.return_value = mock_response
         
         agent = OrchestratorAgent()
-        success = agent.register_agent("http://localhost:5001")
+        success = agent.register_agent(CALCULATOR_URL)
         
         assert success is True
         assert "TestAgent" in agent.registered_agents
@@ -189,8 +190,8 @@ class TestOrchestratorAgent:
         test_card = AgentCard(
             name="TestAgent",
             description="A test agent",
-            url="http://localhost:5001",
-            skills=[Skill(name="test", description="test skill")]
+            url=CALCULATOR_URL,
+            skills=[Skill(name="test", description="test skill")],
         )
         agent.registered_agents["TestAgent"] = test_card
         
@@ -277,7 +278,7 @@ class TestA2AClient:
             "result": {
                 "name": "TestAgent",
                 "description": "A test agent",
-                "url": "http://localhost:5000",
+                "url": DEFAULT_AGENT_URL,
                 "skills": [],
                 "supported_interaction_modes": ["text"],
                 "version": "1.0",
@@ -286,7 +287,7 @@ class TestA2AClient:
         }
         mock_post.return_value = mock_response
         
-        client = A2AClient("http://localhost:5000")
+        client = A2AClient(DEFAULT_AGENT_URL)
         card = client.get_agent_card()
         
         assert card.name == "TestAgent"
@@ -311,7 +312,7 @@ class TestA2AClient:
         }
         mock_post.return_value = mock_response
         
-        client = A2AClient("http://localhost:5000")
+        client = A2AClient(DEFAULT_AGENT_URL)
         task = client.create_task()
         
         assert task.task_id == "test-123"
@@ -328,7 +329,7 @@ class TestA2AClient:
         }
         mock_get.return_value = mock_response
         
-        client = A2AClient("http://localhost:5000")
+        client = A2AClient(DEFAULT_AGENT_URL)
         health = client.health_check()
         
         assert health["status"] == "healthy"

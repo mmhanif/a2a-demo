@@ -18,6 +18,14 @@ import gradio as gr
 
 from a2a_demo.agents import OrchestratorAgent
 from a2a_demo.client import A2AClient
+from a2a_demo.config import (
+    CALCULATOR_AGENT,
+    CALCULATOR_URL,
+    ORCHESTRATOR_AGENT,
+    ORCHESTRATOR_URL,
+    TRANSLATOR_AGENT,
+    TRANSLATOR_URL,
+)
 
 
 class AgentManager:
@@ -26,7 +34,8 @@ class AgentManager:
     def __init__(self):
         self.agents = {
             "OrchestratorAgent": {
-                "port": 5003,
+                "port": ORCHESTRATOR_AGENT.port,
+                "url": ORCHESTRATOR_URL,
                 "module": "a2a_demo.agents.orchestrator_agent",
                 "description": "Coordinates tasks across multiple specialized agents",
                 "process": None,
@@ -34,7 +43,8 @@ class AgentManager:
                 "always_running": True,
             },
             "CalculatorAgent": {
-                "port": 5001,
+                "port": CALCULATOR_AGENT.port,
+                "url": CALCULATOR_URL,
                 "module": "a2a_demo.agents.calculator_agent",
                 "description": "Performs mathematical calculations and solves equations",
                 "process": None,
@@ -42,7 +52,8 @@ class AgentManager:
                 "always_running": False,
             },
             "TranslatorAgent": {
-                "port": 5002,
+                "port": TRANSLATOR_AGENT.port,
+                "url": TRANSLATOR_URL,
                 "module": "a2a_demo.agents.translator_agent",
                 "description": "Translates text between English and Spanish/French/German",
                 "process": None,
@@ -57,7 +68,7 @@ class AgentManager:
     def start_orchestrator_embedded(self):
         """Start the orchestrator agent in a separate thread."""
         if self.orchestrator is None:
-            self.orchestrator = OrchestratorAgent(port=5003)
+            self.orchestrator = OrchestratorAgent(port=ORCHESTRATOR_AGENT.port)
 
             def run_orchestrator():
                 self.orchestrator.run(debug=False)
@@ -78,8 +89,7 @@ class AgentManager:
         if self.orchestrator:
             for name, info in self.agents.items():
                 if name != "OrchestratorAgent" and self.is_agent_running(name):
-                    url = f"http://localhost:{info['port']}"
-                    self.orchestrator.register_agent(url)
+                    self.orchestrator.register_agent(info["url"])
 
     def start_agent(self, agent_name: str) -> Tuple[bool, str]:
         """Start an agent process."""
@@ -113,8 +123,7 @@ class AgentManager:
 
                 # Register with orchestrator if it's running
                 if self.orchestrator:
-                    url = f"http://localhost:{agent_info['port']}"
-                    self.orchestrator.register_agent(url)
+                    self.orchestrator.register_agent(agent_info["url"])
 
                 self._log_interaction("system", f"{agent_name} started successfully")
                 return True, f"{agent_name} started successfully"
@@ -157,7 +166,7 @@ class AgentManager:
 
         agent_info = self.agents[agent_name]
         try:
-            client = A2AClient(f"http://localhost:{agent_info['port']}", timeout=2)
+            client = A2AClient(agent_info["url"], timeout=2)
             health = client.health_check()
             is_healthy = health.get("status") == "healthy"
             if is_healthy:
@@ -189,7 +198,7 @@ class AgentManager:
     def chat_with_orchestrator(self, message: str) -> str:
         """Send a message to the orchestrator and get a response."""
         try:
-            client = A2AClient("http://localhost:5003", timeout=10)
+            client = A2AClient(ORCHESTRATOR_URL, timeout=10)
             self._log_interaction("user", message)
 
             response = client.chat(message)

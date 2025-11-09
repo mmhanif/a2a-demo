@@ -1,11 +1,20 @@
 """Tests for A2A protocol models."""
 
 import pytest
+from a2a_demo.config import DEFAULT_AGENT_URL
 from a2a_demo.models import (
-    AgentCard, Skill, InteractionMode,
-    JSONRPCRequest, JSONRPCResponse, JSONRPCError,
-    Task, TaskStatus, TaskMessage, MessageRole,
-    PARSE_ERROR, METHOD_NOT_FOUND
+    AgentCard,
+    Skill,
+    InteractionMode,
+    JSONRPCRequest,
+    JSONRPCResponse,
+    JSONRPCError,
+    Task,
+    TaskStatus,
+    TaskMessage,
+    MessageRole,
+    PARSE_ERROR,
+    METHOD_NOT_FOUND,
 )
 
 
@@ -23,14 +32,14 @@ class TestAgentCard:
         card = AgentCard(
             name="TestAgent",
             description="A test agent",
-            url="http://localhost:5000",
+            url=DEFAULT_AGENT_URL,
             skills=[skill],
-            version="1.0"
+            version="1.0",
         )
         
         assert card.name == "TestAgent"
         assert card.description == "A test agent"
-        assert card.url == "http://localhost:5000"
+        assert card.url == DEFAULT_AGENT_URL
         assert len(card.skills) == 1
         assert card.skills[0].name == "test_skill"
     
@@ -44,15 +53,15 @@ class TestAgentCard:
         card = AgentCard(
             name="TestAgent",
             description="A test agent",
-            url="http://localhost:5000",
-            skills=[skill]
+            url=DEFAULT_AGENT_URL,
+            skills=[skill],
         )
         
         card_dict = card.to_dict()
         
         assert card_dict["name"] == "TestAgent"
         assert card_dict["description"] == "A test agent"
-        assert card_dict["url"] == "http://localhost:5000"
+        assert card_dict["url"] == DEFAULT_AGENT_URL
         assert len(card_dict["skills"]) == 1
         assert card_dict["skills"][0]["name"] == "test_skill"
     
@@ -61,7 +70,7 @@ class TestAgentCard:
         data = {
             "name": "TestAgent",
             "description": "A test agent",
-            "url": "http://localhost:5000",
+            "url": DEFAULT_AGENT_URL,
             "version": "1.0",
             "skills": [
                 {

@@ -45,6 +45,8 @@ Each agent exposes a card describing its capabilities:
 
 ### 2. **Three Agent Types**
 
+For default host/port assignments, see `a2a_demo.config`.
+
 #### CalculatorAgent (Port 5001)
 - Performs mathematical calculations
 - Solves simple linear equations
@@ -54,7 +56,7 @@ Each agent exposes a card describing its capabilities:
 - Translates text between English and Spanish/French/German
 - Skill: `translate`
 
-#### OrchestratorAgent (Port 5000)
+#### OrchestratorAgent (Port 5003)
 - Discovers and coordinates other agents
 - Routes tasks to appropriate specialized agents
 - Skills: `orchestrate`, `discover_agents`
@@ -126,9 +128,10 @@ uv run python -m a2a_demo.agents.orchestrator_agent
 
 ```python
 from a2a_demo.client import A2AClient
+from a2a_demo.config import CALCULATOR_URL
 
 # Connect to calculator agent
-calc_client = A2AClient("http://localhost:5001")
+calc_client = A2AClient(CALCULATOR_URL)
 
 # Get agent capabilities
 card = calc_client.get_agent_card()
@@ -148,9 +151,10 @@ print(response)  # "The solution is x = 15"
 
 ```python
 from a2a_demo.client import A2AClient
+from a2a_demo.config import ORCHESTRATOR_URL
 
 # Connect to orchestrator
-orch_client = A2AClient("http://localhost:5000")
+orch_client = A2AClient(ORCHESTRATOR_URL)
 
 # List available agents
 response = orch_client.chat("list agents")

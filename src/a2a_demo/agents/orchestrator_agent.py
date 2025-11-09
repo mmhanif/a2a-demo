@@ -4,6 +4,7 @@ from typing import Dict, List
 
 import requests
 
+from ..config import CALCULATOR_URL, TRANSLATOR_URL
 from ..models import AgentCard, InteractionMode, JSONRPCRequest, Skill, TaskMessage
 from .base_agent import BaseAgent
 
@@ -220,7 +221,7 @@ if __name__ == "__main__":
     agent = OrchestratorAgent()
 
     # Register other agents (assuming they're running)
-    agent.register_agent("http://localhost:5001")  # Calculator
-    agent.register_agent("http://localhost:5002")  # Translator
+    agent.register_agent(CALCULATOR_URL)  # Calculator
+    agent.register_agent(TRANSLATOR_URL)  # Translator
 
     agent.run(debug=True)
